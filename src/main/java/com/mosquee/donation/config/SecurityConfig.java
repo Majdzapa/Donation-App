@@ -61,12 +61,6 @@ public class SecurityConfig {
         http.oauth2ResourceServer(config ->
                 config.jwt(jwt -> jwt.jwtAuthenticationConverter(new JwtConverter())));
 
-
-        http
-                .requiresChannel(channel -> channel
-                        .anyRequest()
-                        .requiresSecure()
-                );
         http.oauth2Login(Customizer.withDefaults());
 
         return http.build();
