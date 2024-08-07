@@ -3,6 +3,7 @@ package com.mosquee.donation.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,12 +47,17 @@ public class SecurityConfig {
 
 
     @Bean
+    @Order(1)
     public SecurityFilterChain resourceServerFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authorizeRequests ->
-                authorizeRequests
-                        .requestMatchers("/*").permitAll()
-                        .anyRequest().authenticated()
-        );
+        http.csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/login","/register") // Disable CSRF protection for the login endpoint
+                )
+
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/login","/register").permitAll()
+                                .anyRequest().authenticated()
+                );
         http.oauth2ResourceServer(config ->
                 config.jwt(jwt -> jwt.jwtAuthenticationConverter(new JwtConverter())));
 
