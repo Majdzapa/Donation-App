@@ -43,7 +43,9 @@ public class KeycloakAdminClientConfig {
     }
 
     public RealmResource getRealmResource() {
-        return keycloak().realm(realm);
+        try(Keycloak keycloak = keycloak()){
+            return keycloak.realm(realm);
+        }
     }
 
     public UserResource getUserResource(String userId) {

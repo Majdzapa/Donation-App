@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -94,8 +95,13 @@ public class AuthService {
     }
 
 
-    public UserRepresentation getUserDetails(String userId) {
+    public UserRepresentation getUserDetailsById(String userId) {
 
         return keycloak.realm(keycloakAdminClientConfig.getRealm()).users().get(userId).toRepresentation();
+    }
+
+    public List<UserRepresentation> getUserDetailsByEmail(String email) {
+
+        return keycloak.realm(keycloakAdminClientConfig.getRealm()).users().searchByEmail(email,true);
     }
 }

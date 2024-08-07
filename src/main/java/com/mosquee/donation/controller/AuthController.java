@@ -39,7 +39,7 @@ public class AuthController {
 
         String userId = jwt.getClaim("sub");
 
-        return ResponseEntity.ok(authService.getUserDetails(userId));
+        return ResponseEntity.ok(authService.getUserDetailsById(userId));
     }
 
 
